@@ -1,0 +1,84 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.BitSet;
+
+public class Game extends JPanel implements Runnable, ActionListener {
+    private Screen screen;
+    public Manage manage = new Manage();
+    private BitSet traceKey = new BitSet();
+    public static boolean running = true;
+    private int count = 0;
+    public static Entity entity;
+
+    public Game(Screen screen) {
+        this.screen = screen;
+        setLayout(null);
+        setFocusable(true);
+        addKeyListener(keyAdapter);
+        Thread mythread = new Thread(this);
+        mythread.start();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D graphics2D = (Graphics2D) g;
+        manage.run(graphics2D);
+    }
+
+    private KeyAdapter keyAdapter = new KeyAdapter() {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            traceKey.set(e.getKeyCode());
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            traceKey.clear(e.getKeyCode());
+        }
+    };
+
+    @Override
+    public void run() {
+
+        while (running) {
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (traceKey.get(KeyEvent.VK_RIGHT)) {
+                manage.getBomber().changeOrient(Bomber.RIGHT);
+            }
+            if (traceKey.get(KeyEvent.VK_LEFT)) {
+                manage.getBomber().changeOrient(Bomber.LEFT);
+            }
+
+            if (traceKey.get(KeyEvent.VK_DOWN)) {
+                manage.getBomber().changeOrient(Bomber.DOWN);
+
+            }
+
+            if (traceKey.get(KeyEvent.VK_UP)) {
+                manage.getBomber().changeOrient(Bomber.UP);
+            }
+
+
+                repaint();
+                count++;
+                if (count == 1000000) {
+                    count = 1;
+                }
+
+        }
+    }
+
+        @Override
+        public void actionPerformed (ActionEvent e){
+
+        }
+}
