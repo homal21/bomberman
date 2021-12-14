@@ -19,18 +19,41 @@ public class Bomber extends MoveEntity {
     public static Image[] bomberDeadImages = {
             new ImageIcon("res/sprites/player_dead1.png").getImage(),
             new ImageIcon("res/sprites/player_dead2.png").getImage(),
-            new ImageIcon("res/sprites/player_dead3.png").getImage()
+            new ImageIcon("res/sprites/player_dead3.png").getImage(),
+            new ImageIcon("res/sprites/transparent.png").getImage()
     };
-
+    public int bombSize = 2;
+    public int bombCapacity = 1;
     public Bomber(int x, int y) {
         super(x, y, bomberMoveImages, bomberDeadImages);
     }
+
+    public boolean isTouchEnemy(Manage manage) {
+        for (Enemy enemy : manage.enemies) {
+            if (enemy.isAlive && Math.abs(getX() - enemy.getX()) <= Entity.SIZE - 5
+                    && Math.abs(getY() - enemy.getY()) <= Entity.SIZE - 5) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     @Override
     public void move(Manage manage) {
+        if (!isAlive) {
+            die();
+            return;
+        }
+        countMove ++; countMove %=2;
+        if (countMove > 0) return;
         if (orient == RIGHT) super.moveRight(manage);
         if (orient == LEFT) super.moveLeft(manage);
         if (orient == DOWN) super.moveDown(manage);
         if (orient == UP) super.moveUp(manage);
+        if (isTouchEnemy(manage) || isTouchFlame(manage)) {
+            startDie();
+        }
     }
 
 }

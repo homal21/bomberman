@@ -51,6 +51,9 @@ public class Game extends JPanel implements Runnable, ActionListener {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            if (traceKey.get(KeyEvent.VK_SPACE)) {
+                manage.addNewBomb();
+            }
             if (traceKey.get(KeyEvent.VK_RIGHT)) {
                 manage.getBomber().changeOrient(Bomber.RIGHT);
             }

@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.ArrayList;
 
 public abstract class MoveEntity extends Entity {
     public static final int LEFT = 1;
@@ -7,9 +6,11 @@ public abstract class MoveEntity extends Entity {
     public static final int UP = 3;
     public static final int DOWN = 4;
     protected int speed = 1;
-    public int count = 0;
+    public int countChangeImage = 0;
+    public int countMove = 0;
     public int index = 0;
     public boolean isAlive = true;
+    public boolean isDying = false;
     protected int orient;
     public Image[] moveImages;
     public Image[] deadImages;
@@ -38,10 +39,10 @@ public abstract class MoveEntity extends Entity {
 
 
     public void moveRight(Manage manage) {
-        count ++;
-        if (count == 5) {
+        countChangeImage++;
+        if (countChangeImage == 5) {
             index++;
-            count = 0;
+            countChangeImage = 0;
         }
         if (index > 2) index = 0;
         int row = (y + Entity.SIZE / 2) / Entity.SIZE;
@@ -66,10 +67,10 @@ public abstract class MoveEntity extends Entity {
     }
 
     public void moveLeft(Manage manage) {
-        count ++;
-        if (count == 5) {
+        countChangeImage++;
+        if (countChangeImage == 5) {
             index++;
-            count = 0;
+            countChangeImage = 0;
         }
         if (index > 5 || index < 3) index = 3;
         int row = (y + Entity.SIZE / 2) / Entity.SIZE;
@@ -94,11 +95,11 @@ public abstract class MoveEntity extends Entity {
     }
 
     public void moveDown(Manage manage) {
-        count ++;
-        if (count == 5)
+        countChangeImage++;
+        if (countChangeImage == 5)
         {
             index++;
-            count = 0;
+            countChangeImage = 0;
         }
         if (index > 8 || index < 6) index = 6;
         int row = (y + Entity.SIZE / 2) / Entity.SIZE;
@@ -123,11 +124,11 @@ public abstract class MoveEntity extends Entity {
     }
 
     public void moveUp(Manage manage) {
-        count ++;
-        if (count == 5)
+        countChangeImage++;
+        if (countChangeImage == 5)
         {
             index++;
-            count=0;
+            countChangeImage =0;
         }
         if (index > 11 || index < 9) index = 9;
         int row = (y + Entity.SIZE / 2) / Entity.SIZE;
@@ -161,7 +162,35 @@ public abstract class MoveEntity extends Entity {
             setImg(deadImages[index]);
         }
         super.show(graphics);
-        orient = 0;
+        if (this instanceof Bomber) orient = 0;
+    }
+
+    public void die() {
+        countChangeImage++;
+        countChangeImage %= 30;
+        if (countChangeImage == 0) {
+            if (index + 1 < deadImages.length) index++;
+            else isDying = false;
+        }
+    }
+
+    public void startDie() {
+        index = 0;
+        countChangeImage = 0;
+        isAlive = false;
+        isDying = true;
+    }
+
+    public boolean isTouchFlame(Manage manage) {
+        for (Bomb bomb : manage.bombs) {
+            if (!bomb.isExploding) continue;
+            for (Flame flame : bomb.flames)
+                if (Math.abs(getX() - flame.getX()) <= Entity.SIZE - 10
+                        && Math.abs(getY() - flame.getY()) <= Entity.SIZE - 10) {
+                    return true;
+                }
+        }
+        return false;
     }
 }
 
