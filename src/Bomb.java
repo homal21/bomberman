@@ -1,3 +1,5 @@
+import sounds.Sound;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -58,6 +60,7 @@ public class Bomb extends Entity {
         super(x,y, new ImageIcon("res/sprites/bomb.png").getImage());
         this.size = size;
         createTime = System.currentTimeMillis();
+        sounds.Sound.play("sounds/drop_bomb.wav");
     }
 
     @Override
@@ -116,6 +119,14 @@ public class Bomb extends Entity {
                 ((Brick) manage.staticEntities[row][j]).isExploding = true;
                 break;
             }
+            if (manage.staticEntities[row][j] instanceof Item) {
+                ((Item) manage.staticEntities[row][j]).isExploding = true;
+                break;
+            }
+            if (manage.staticEntities[row][j] instanceof Bomb &&  !((Bomb) manage.staticEntities[row][j]).isExploding) {
+                ((Bomb) manage.staticEntities[row][j]).startExplode(manage);
+                break;
+            }
             if (j - col < size) flames.add(new Flame(j * Entity.SIZE, row * Entity.SIZE, horizontalImages));
             else flames.add(new Flame(j * Entity.SIZE, row * Entity.SIZE, rightImages));
         }
@@ -124,6 +135,14 @@ public class Bomb extends Entity {
             if (manage.staticEntities[row][j] instanceof Wall) break;
             if (manage.staticEntities[row][j] instanceof Brick) {
                 ((Brick) manage.staticEntities[row][j]).isExploding = true;
+                break;
+            }
+            if (manage.staticEntities[row][j] instanceof Item) {
+                ((Item) manage.staticEntities[row][j]).isExploding = true;
+                break;
+            }
+            if (manage.staticEntities[row][j] instanceof Bomb &&  !((Bomb) manage.staticEntities[row][j]).isExploding) {
+                ((Bomb) manage.staticEntities[row][j]).startExplode(manage);
                 break;
             }
             if (col - j < size) flames.add(new Flame(j * Entity.SIZE, row * Entity.SIZE, horizontalImages));
@@ -136,6 +155,14 @@ public class Bomb extends Entity {
                 ((Brick) manage.staticEntities[i][col]).isExploding = true;
                 break;
             }
+            if (manage.staticEntities[i][col] instanceof Item) {
+                ((Item) manage.staticEntities[i][col]).isExploding = true;
+                break;
+            }
+            if (manage.staticEntities[i][col] instanceof Bomb &&!((Bomb) manage.staticEntities[i][col]).isExploding) {
+                ((Bomb) manage.staticEntities[i][col]).startExplode(manage);
+                break;
+            }
             if (i - row < size) flames.add(new Flame(col * Entity.SIZE, i * Entity.SIZE, verticalImages));
             else flames.add(new Flame(col * Entity.SIZE, i * Entity.SIZE, bottomImages));
         }
@@ -146,10 +173,18 @@ public class Bomb extends Entity {
                 ((Brick) manage.staticEntities[i][col]).isExploding = true;
                 break;
             }
+            if (manage.staticEntities[i][col] instanceof Item) {
+                ((Item) manage.staticEntities[i][col]).isExploding = true;
+                break;
+            }
+            if (manage.staticEntities[i][col] instanceof Bomb && !((Bomb) manage.staticEntities[i][col]).isExploding) {
+                ((Bomb) manage.staticEntities[i][col]).startExplode(manage);
+                break;
+            }
             if (row - i < size) flames.add(new Flame(col * Entity.SIZE, i * Entity.SIZE, verticalImages));
             else flames.add(new Flame(col * Entity.SIZE, i * Entity.SIZE, topImages));
         }
-
+        Sound.play("sounds/explosion.wav");
     }
 
 }

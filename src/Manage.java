@@ -1,3 +1,5 @@
+import org.w3c.dom.css.RGBColor;
+
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -21,15 +23,16 @@ public class Manage  {
     }
 
 
-    public Manage() {
-        init();
+    public Manage(String path) {
+        init(path);
     }
 
-    public void init() {
+    public void init(String path) {
         bomber = new Bomber(Entity.SIZE, Entity.SIZE);
          List<String> list = new ArrayList<>();
         try {
-            FileReader fr = new FileReader("res/levels/level1.txt");
+            //FileReader fr = new FileReader("res/levels/level1.txt");
+            FileReader fr = new FileReader(path);
             BufferedReader br = new BufferedReader(fr);
             String line = br.readLine();
             while (!line.equals("")) {
@@ -69,6 +72,26 @@ public class Manage  {
                         enemies.add(new Oneal(j * Entity.SIZE, i * Entity.SIZE));
                         staticEntities[i][j] =  new Grass(j * Entity.SIZE, i * Entity.SIZE);
                         break;
+                    case 'x':
+                        brick = new Brick(j * Entity.SIZE, i * Entity.SIZE);
+                        brick.isPortal = true;
+                        staticEntities[i][j] = brick;
+                        break;
+                    case 's':
+                        brick = new Brick(j * Entity.SIZE, i * Entity.SIZE);
+                        brick.item = new SpeedItem(j * Entity.SIZE, i * Entity.SIZE);
+                        staticEntities[i][j] = brick;
+                        break;
+                    case 'b':
+                        brick = new Brick(j * Entity.SIZE, i * Entity.SIZE);
+                        brick.item = new BombsItem(j * Entity.SIZE, i * Entity.SIZE);
+                        staticEntities[i][j] = brick;
+                        break;
+                    case 'f':
+                        brick = new Brick(j * Entity.SIZE, i * Entity.SIZE);
+                        brick.item = new FlamesItem(j * Entity.SIZE, i * Entity.SIZE);
+                        staticEntities[i][j] = brick;
+                        break;
                     default:
                         Grass grass = new Grass(j * Entity.SIZE, i * Entity.SIZE);
                         staticEntities[i][j] = grass;
@@ -84,7 +107,12 @@ public class Manage  {
             for (int j = 0; j < width; j++) {
                 if (staticEntities[i][j] instanceof  Brick) {
                     if (((Brick) staticEntities[i][j]).isDestroyed) {
-                        staticEntities[i][j]= new Grass(j * Entity.SIZE, i * Entity.SIZE);
+                        if (((Brick) staticEntities[i][j]).isPortal)
+                            staticEntities[i][j] = new Portal(j * Entity.SIZE, i * Entity.SIZE);
+                        else
+                            if (((Brick) staticEntities[i][j]).item != null)
+                                staticEntities[i][j] = ((Brick) staticEntities[i][j]).item;
+                            else staticEntities[i][j] = new Grass(j * Entity.SIZE, i * Entity.SIZE);
                         continue;
                     }
                     if (((Brick) staticEntities[i][j]).isExploding) {
@@ -98,6 +126,10 @@ public class Manage  {
                     }
                     new Grass(j * Entity.SIZE, i * Entity.SIZE).show(g);
                 }
+                if (staticEntities[i][j] instanceof Portal) {
+                    new Grass(j * Entity.SIZE, i * Entity.SIZE).show(g);
+                }
+
                 staticEntities[i][j].show(g);
             }
         }
@@ -111,6 +143,27 @@ public class Manage  {
         staticEntities[row][col] = bomb;
         bombs.add(bomb);
     }
+
+    public boolean isWon() {
+        //if (enemies.size() > 0) return false;
+        int row = (bomber.y + Entity.SIZE/2) / Entity.SIZE;
+        int col = (bomber.x + Entity.SIZE/2) / Entity.SIZE;
+        if (staticEntities[row][col] instanceof Portal) return true;
+        return false;
+    }
+
+    public void startStage(Graphics2D g, int stageIndex) {
+        g.setFont(new Font("Calibri", Font.BOLD, 50));
+        g.setColor(Color.RED);
+        g.drawString("STAGE " + stageIndex , 400, 200);
+    }
+
+    public void endGame(Graphics2D g) {
+        g.setFont(new Font("Calibri", Font.BOLD, 50));
+        g.setColor(Color.RED);
+        g.drawString("YOU WIN", 400, 200);
+    }
+
     public void run(Graphics2D g) {
         drawStaticEntities(g);
 

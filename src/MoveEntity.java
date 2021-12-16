@@ -1,3 +1,5 @@
+import sounds.Sound;
+
 import java.awt.*;
 
 public abstract class MoveEntity extends Entity {
@@ -179,6 +181,10 @@ public abstract class MoveEntity extends Entity {
         countChangeImage = 0;
         isAlive = false;
         isDying = true;
+        if (this instanceof Bomber) {
+            Sound.play("sounds/bomber_die.wav");
+        }
+        else Sound.play("sounds/enemy_die.wav");
     }
 
     public boolean isTouchFlame(Manage manage) {

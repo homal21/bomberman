@@ -1,0 +1,313 @@
+@startuml
+
+
+    class Balloom {
+        {static} + balloomDeadImages : Image[]
+        {static} + balloomMoveImages : Image[]
+        + Balloom()
+        + Balloom()
+        + move()
+        + setTarget()
+    }
+
+    class Bomb {
+            {static} + bombImages : Image[]
+            {static} + bottomImages : Image[]
+            + count : int
+            + createTime : long
+            {static} + explodeImages : Image[]
+            + flames : ArrayList<Flame>
+            {static} + horizontalImages : Image[]
+            + index : int
+            + isExploding : boolean
+            + isRunning : boolean
+            {static} + leftImages : Image[]
+            {static} + rightImages : Image[]
+            + size : int
+            {static} + topImages : Image[]
+            {static} + verticalImages : Image[]
+            + Bomb()
+            + run()
+            + show()
+            ~ Explode()
+            ~ startExplode()
+        }
+
+
+
+
+        class Bomber {
+            + bombCapacity : int
+            + bombSize : int
+            {static} + bomberDeadImages : Image[]
+            {static} + bomberMoveImages : Image[]
+            + Bomber()
+            + checkConflictItem()
+            + isTouchEnemy()
+            + move()
+        }
+
+
+
+
+        class BombsItem {
+            + BombsItem()
+            + upgrade()
+        }
+
+
+
+
+        class Brick {
+            + count : int
+            + explodeIndex : int
+            + explodedImage : Image[]
+            + isDestroyed : boolean
+            + isExploding : boolean
+            + isPortal : boolean
+            + Brick()
+            + explode()
+        }
+
+
+
+        abstract class Enemy {
+            + targetX : int
+            + targetY : int
+            + Enemy()
+            + move()
+            {abstract} + setTarget()
+        }
+
+
+
+
+        abstract class Entity {
+            {static} + SIZE : int
+            # img : Image
+            # x : int
+            # y : int
+            + Entity()
+            + getImg()
+            + getX()
+            + getY()
+            + isBlock()
+            + setImg()
+            + setX()
+            + setY()
+            + show()
+        }
+
+
+
+
+        class Flame {
+            + images : Image[]
+            + Flame()
+        }
+
+
+
+
+        class FlamesItem {
+            + FlamesItem()
+            + upgrade()
+        }
+
+
+
+
+        class Game {
+            {static} + entity : Entity
+            + isEnding : boolean
+            + isStartStage : boolean
+            {static} + running : boolean
+            + stageIndex : int
+            + stageName : String[]
+            - count : int
+            - keyAdapter : KeyAdapter
+            - traceKey : BitSet
+            + Game()
+            + actionPerformed()
+            + run()
+            # paintComponent()
+        }
+
+
+
+
+        class Grass {
+            + Grass()
+        }
+
+
+
+
+        abstract class Item {
+            + Item()
+            {abstract} + upgrade()
+        }
+
+
+
+
+        class Main {
+            {static} + main()
+        }
+
+
+
+
+        class Manage {
+            + bombs : ArrayList<Bomb>
+            + enemies : ArrayList<Enemy>
+            + height : int
+            + staticEntities : Entity[][]
+            + width : int
+            + Manage()
+            + drawStaticEntities()
+            + endGame()
+            + getBalloom()
+            + getBomber()
+            + init()
+            + isWon()
+            + run()
+            + startStage()
+            ~ addNewBomb()
+        }
+
+
+
+        abstract class MoveEntity {
+            {static} + DOWN : int
+            {static} + LEFT : int
+            {static} + RIGHT : int
+            {static} + UP : int
+            + countChangeImage : int
+            + countMove : int
+            + deadImages : Image[]
+            + index : int
+            + isAlive : boolean
+            + isDying : boolean
+            + moveImages : Image[]
+            # orient : int
+            # speed : int
+            + MoveEntity()
+            + changeOrient()
+            + die()
+            + getOrient()
+            + getSpeed()
+            + isTouchFlame()
+            {abstract} + move()
+            + moveDown()
+            + moveLeft()
+            + moveRight()
+            + moveUp()
+            + setSpeed()
+            + show()
+            + startDie()
+        }
+
+
+
+
+        class Oneal {
+            {static} + OnealDeadImages : Image[]
+            {static} + OnealMoveImages : Image[]
+            + Oneal()
+            + Oneal()
+            + move()
+            + setTarget()
+        }
+
+
+
+
+        class Portal {
+            + Portal()
+        }
+
+
+
+
+        class Screen {
+            - mCardLayout : CardLayout
+            + Screen()
+            + getGame()
+        }
+
+
+
+        class SpeedItem {
+            + SpeedItem()
+            + upgrade()
+        }
+
+
+
+
+        class Wall {
+            + Wall()
+        }
+
+
+
+
+        class game1 {
+            + game1()
+        }
+
+
+
+
+        namespace Sounds {
+          class sounds.Sound {
+              {static} + getClip()
+              {static} + play()
+          }
+        }
+
+      Balloom -up-|> Enemy
+      Bomb -up-|> Entity
+      Bomber -up-|> MoveEntity
+      BombsItem -up-|> Item
+      Brick -up-|> Entity
+      Brick o-- Item : item
+      Enemy -up-|> MoveEntity
+      Flame -up-|> Entity
+      FlamesItem -up-|> Item
+      Game .up.|> java.awt.event.ActionListener
+      Game .up.|> java.lang.Runnable
+      Game -up-|> javax.swing.JPanel
+      Game o-- Manage : manage
+      Game o-- Screen : screen
+      Grass -up-|> Entity
+      Item -up-|> Brick
+      Manage o-- Balloom : balloom
+      Manage o-- Balloom : balloom1
+      Manage o-- Bomber : bomber
+      MoveEntity -up-|> Entity
+      Oneal -up-|> Enemy
+      Portal -up-|> Entity
+      Screen -up-|> javax.swing.JPanel
+      Screen o-- Game : game
+      Screen o-- game1 : game1
+      SpeedItem -up-|> Item
+      Wall -up-|> Entity
+      game1 -up-|> javax.swing.JFrame
+      game1 o-- Screen : screen
+
+
+    right footer
+
+
+    PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+    For more information about this tool, please contact philippe.mesmeur@gmail.com
+    endfooter
+
+
+
+
+
+@enduml
+

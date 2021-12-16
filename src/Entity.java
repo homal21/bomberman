@@ -36,9 +36,10 @@ public abstract class Entity {
     }
 
     public boolean isBlock() {
+        if (this instanceof Item) return false;
         if (this instanceof Wall) return true;
-        if (this instanceof Brick) return true;
         if (this instanceof Bomb) return true;
+        if (this instanceof Brick) return true;
         return false;
     }
 

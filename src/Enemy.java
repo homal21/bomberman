@@ -10,7 +10,6 @@ public abstract class Enemy extends MoveEntity{
 
     @Override
     public void move(Manage manage) {
-        //System.out.println(targetX+" "+targetY);
         if (orient == 0) {
             System.out.println("zzz");
         }

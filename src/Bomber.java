@@ -22,7 +22,7 @@ public class Bomber extends MoveEntity {
             new ImageIcon("res/sprites/player_dead3.png").getImage(),
             new ImageIcon("res/sprites/transparent.png").getImage()
     };
-    public int bombSize = 2;
+    public int bombSize = 1;
     public int bombCapacity = 1;
     public Bomber(int x, int y) {
         super(x, y, bomberMoveImages, bomberDeadImages);
@@ -38,6 +38,19 @@ public class Bomber extends MoveEntity {
         return false;
     }
 
+    public void checkConflictItem(Manage manage) {
+        int row = (getY() + Entity.SIZE/2) / Entity.SIZE;
+        int col = (getX() + Entity.SIZE/2) / Entity.SIZE;
+        if (getX() >= Entity.SIZE * col + 5) col++;
+        if (getX() <= Entity.SIZE * col - 5) col--;
+        if (getY() >= Entity.SIZE * row + 5) row++;
+        if (getY() <= Entity.SIZE * row - 5) row--;
+        if (manage.staticEntities[row][col] instanceof Item) {
+            ((Item) manage.staticEntities[row][col]).upgrade(this);
+            manage.staticEntities[row][col] = new Grass(col * Entity.SIZE, row * Entity.SIZE);
+            sounds.Sound.play("sounds/item.wav");
+        }
+    }
 
     @Override
     public void move(Manage manage) {
@@ -53,7 +66,9 @@ public class Bomber extends MoveEntity {
         if (orient == UP) super.moveUp(manage);
         if (isTouchEnemy(manage) || isTouchFlame(manage)) {
             startDie();
+            return;
         }
+        checkConflictItem(manage);
     }
 
 }
