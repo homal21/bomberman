@@ -16,14 +16,4 @@ public class Sound {
         }
     }
 
-    public static Clip getClip(String path) {
-        try {
-            Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(new File(path)));
-            return clip;
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
-        return null;
-    }
 }

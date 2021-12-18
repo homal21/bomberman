@@ -10,9 +10,6 @@ public abstract class Enemy extends MoveEntity{
 
     @Override
     public void move(Manage manage) {
-        if (orient == 0) {
-            System.out.println("zzz");
-        }
         if (targetX == 0 && targetY == 0) setTarget(manage);
         if (manage.staticEntities[targetY / Entity.SIZE][targetX / Entity.SIZE].isBlock()) setTarget(manage);
         if (Math.abs(x - targetX) <= speed && Math.abs(y-targetY) <= speed) {

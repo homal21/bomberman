@@ -126,6 +126,7 @@ title __SRC's Class Diagram__\n
     class Game {
         {static} + entity : Entity
         + isEnding : boolean
+        + isLoser : boolean
         + isStartStage : boolean
         {static} + running : boolean
         + stageIndex : int
@@ -177,6 +178,7 @@ title __SRC's Class Diagram__\n
         + getBomber()
         + init()
         + isWon()
+        + loseGame()
         + run()
         + startStage()
         ~ addNewBomb()

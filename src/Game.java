@@ -15,6 +15,7 @@ public class Game extends JPanel implements Runnable, ActionListener {
     public static Entity entity;
     public boolean isEnding = false;
     public int stageIndex = 0;
+    public boolean isLoser = false;
     public boolean isStartStage = true;
     public String[] stageName = {
             "res/levels/level1.txt",
@@ -40,6 +41,9 @@ public class Game extends JPanel implements Runnable, ActionListener {
         }
         if (isEnding) {
             manage.endGame(graphics2D);
+        }
+        if (isLoser) {
+            manage.loseGame(graphics2D);
         }
     }
 
@@ -92,6 +96,9 @@ public class Game extends JPanel implements Runnable, ActionListener {
                     e.printStackTrace();
                 }
                 isStartStage = false;
+            }
+            if (!manage.getBomber().isAlive) {
+                isLoser = true;
             }
             count++;
             if (count == 1000000) {

@@ -138,6 +138,7 @@ public class Manage  {
         if (bombs.size() == bomber.bombCapacity) return;
         int row = (bomber.y + Entity.SIZE/2) / Entity.SIZE;
         int col = (bomber.x + Entity.SIZE/2) / Entity.SIZE;
+        if (staticEntities[row][col] instanceof Portal) return;
         if (staticEntities[row][col] instanceof Bomb) return;
         Bomb bomb = new Bomb(col * Entity.SIZE, row * Entity.SIZE, bomber.bombSize);
         staticEntities[row][col] = bomb;
@@ -162,6 +163,12 @@ public class Manage  {
         g.setFont(new Font("Calibri", Font.BOLD, 50));
         g.setColor(Color.RED);
         g.drawString("YOU WIN", 400, 200);
+    }
+
+    public void loseGame(Graphics2D g) {
+        g.setFont(new Font("Calibri", Font.BOLD, 50));
+        g.setColor(Color.RED);
+        g.drawString("YOU LOSE", 400, 200);
     }
 
     public void run(Graphics2D g) {

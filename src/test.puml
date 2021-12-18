@@ -121,6 +121,7 @@
             {static} + entity : Entity
             + isEnding : boolean
             + isStartStage : boolean
+            + isLoser : boolean
             {static} + running : boolean
             + stageIndex : int
             + stageName : String[]
@@ -262,40 +263,39 @@
 
         namespace Sounds {
           class sounds.Sound {
-              {static} + getClip()
               {static} + play()
           }
         }
 
       Balloom -up-|> Enemy
-      Bomb -up-|> Entity
-      Bomber -up-|> MoveEntity
-      BombsItem -up-|> Item
-      Brick -up-|> Entity
-      Brick o-- Item : item
-      Enemy -up-|> MoveEntity
-      Flame -up-|> Entity
-      FlamesItem -up-|> Item
-      Game .up.|> java.awt.event.ActionListener
-      Game .up.|> java.lang.Runnable
-      Game -up-|> javax.swing.JPanel
-      Game o-- Manage : manage
-      Game o-- Screen : screen
-      Grass -up-|> Entity
-      Item -up-|> Brick
-      Manage o-- Balloom : balloom
-      Manage o-- Balloom : balloom1
-      Manage o-- Bomber : bomber
-      MoveEntity -up-|> Entity
-      Oneal -up-|> Enemy
-      Portal -up-|> Entity
-      Screen -up-|> javax.swing.JPanel
-      Screen o-- Game : game
-      Screen o-- game1 : game1
-      SpeedItem -up-|> Item
-      Wall -up-|> Entity
-      game1 -up-|> javax.swing.JFrame
-      game1 o-- Screen : screen
+        Bomb -up-|> Entity
+        Bomber -up-|> MoveEntity
+        BombsItem -up-|> Item
+        Brick -up-|> Entity
+        Brick o-- Item : item
+        Enemy -up-|> MoveEntity
+        Flame -up-|> Entity
+        FlamesItem -up-|> Item
+        Game .up.|> java.awt.event.ActionListener
+        Game .up.|> java.lang.Runnable
+        Game -up-|> javax.swing.JPanel
+        Game o-- Manage : manage
+        Game o-- Screen : screen
+        Grass -up-|> Entity
+        Item -up-|> Brick
+        Manage o-- Balloom : balloom
+        Manage o-- Balloom : balloom1
+        Manage o-- Bomber : bomber
+        MoveEntity -up-|> Entity
+        Oneal -up-|> Enemy
+        Portal -up-|> Entity
+        Screen -up-|> javax.swing.JPanel
+        Screen o-- Game : game
+        Screen o-- game1 : game1
+        SpeedItem -up-|> Item
+        Wall -up-|> Entity
+        game1 -up-|> javax.swing.JFrame
+        game1 o-- Screen : screen
 
 
     right footer
