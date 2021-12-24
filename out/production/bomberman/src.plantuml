@@ -272,7 +272,6 @@ title __SRC's Class Diagram__\n
   namespace  {
     namespace ounds {
       class sounds.Sound {
-          {static} + getClip()
           {static} + play()
       }
     }
